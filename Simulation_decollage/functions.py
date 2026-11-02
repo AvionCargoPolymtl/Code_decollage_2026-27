@@ -40,8 +40,7 @@ def y_movement(Fy, m, vy0, dt):
     return vy, dy
 
 
-def coefficient_force(vitesse, Cl, AR): 
+def coefficient_force(vitesse, Cl, AR, b): 
     rho = 1.225 
-    b = 1.52 
     A = b**2/AR
     return 0.5 * rho * vitesse**2 * A * Cl
