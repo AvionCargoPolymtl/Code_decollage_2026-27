@@ -84,6 +84,17 @@ def y_movement(Fy, m, vy0, dt):
     dy = vy0*dt + (1/2)*ay*dt**2 
     return vy, dy
 
+def induced_drag(AR, Cl):
+
+    #Variables:
+    #AR: Aspect ratio  #Cl: Coefficient de lift
+
+    #Calcul du facteur d'oswald (e)
+    e = 1.78*(1 - 0.045*AR**0.68)-0.64
+
+    #Calcul du induced_drag:
+    Cd_induced = Cl**2 / (pi*AR*e)
+    return Cd_induced
 
 def coefficient_force(vitesse, Cl, AR, b): 
     rho = 1.225 
