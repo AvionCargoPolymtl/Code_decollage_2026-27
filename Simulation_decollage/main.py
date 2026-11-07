@@ -3,10 +3,9 @@ import math
 from functions import (
     reynolds_calc, dynamic_thrust, thrust_components, 
     x_movement, y_movement, coefficient_force,
-    csv_lookup, xflr5_data
+    csv_lookup, xflr5_data, induced_drag, drag_article
 )
-from induced_drag import induced_drag
-from drag_article import drag_article
+
 
 # ==============================================================================
 # BOUCLE DE SIMULATION (sim_loop)
