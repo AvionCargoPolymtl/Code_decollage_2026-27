@@ -49,7 +49,7 @@ def coefficient_force(vitesse, Cl, AR, b):
 def csv_lookup(Re):
     Re_lookup = "{:.3f}".format(round(Re)/10e5) #CONVERSION DU REYNOLDS AU MÊME FORMAT QUE LES NOMS DES FICHIERS CSV
     import csv
-    #LE CHEMIN D'ACCÈS EST À CHANGER AU BESOIN (JE SUIS PAS SÛR QUE C'EST BIEN FAIT)
+    #LE CURRENT DIRECTORY EST À DÉFINIR COMME Simulation_decollage POUR QUE LE CODE PUISSE TROUVER LES FICHIERS À LIRE
     with open(f"./polar/E423_T1_Re{Re_lookup}_M0.00_N9.0.csv") as f:
         data = csv.reader(f)
         donnees=[row for row in data if len(row)==10 and row[0]!="alpha"]
