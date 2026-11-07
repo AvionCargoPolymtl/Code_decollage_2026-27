@@ -44,3 +44,40 @@ def coefficient_force(vitesse, Cl, AR, b):
     rho = 1.225 
     A = b**2/AR
     return 0.5 * rho * vitesse**2 * A * Cl
+
+
+def csv_lookup(Re):
+    Re_lookup = "{:.3f}".format(round(Re)/10e5) #CONVERSION DU REYNOLDS AU MÊME FORMAT QUE LES NOMS DES FICHIERS CSV
+    import csv
+    #LE CHEMIN D'ACCÈS EST À CHANGER AU BESOIN (JE SUIS PAS SÛR QUE C'EST BIEN FAIT)
+    with open(f"./polar/E423_T1_Re{Re_lookup}_M0.00_N9.0.csv") as f:
+        data = csv.reader(f)
+        donnees=[row for row in data if len(row)==10 and row[0]!="alpha"]
+    #NETTOYAGE DU FORMAT DE DONNÉEES
+    donnees_clean=donnees.copy()
+    for liste,listetemp in zip(donnees,donnees_clean):
+        for i,elt in enumerate(liste):
+            clean_elt=float(str(elt).strip())
+            listetemp[i]=clean_elt
+    return(donnees_clean)
+
+
+def xflr5_data(alpha,donnees):
+    #DÉFINITION DES BORNES DE L'INTERPOLATION
+    if alpha-int(alpha)>0.5:
+        alpha_low=int(alpha)+0.5
+        alpha_high=int(alpha)+1
+    else:
+        alpha_low=int(alpha)
+        alpha_high=int(alpha)+0.5
+    #CALCUL DE L'INTERPOLATION
+    for elt in donnees:
+        if elt[0]==alpha_low:
+            cl_low=elt[1]
+            cd_low=elt[2]
+        if elt[0]==alpha_high:
+            cl_high=elt[1]
+            cd_high=elt[2]
+    cl=cl_low+((cl_high-cl_low)/(alpha_high-alpha_low))*(alpha-alpha_low)
+    cd=cd_low+((cd_high-cd_low)/(alpha_high-alpha_low))*(alpha-alpha_low)
+    return(cl,cd)
