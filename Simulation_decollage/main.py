@@ -101,6 +101,7 @@ def main():
          [4, 0, 0], [4, 1, 1], [4, 2, 2], [4, 3, 3], [4, 4, 4], [4, 5, 5], 
          [5, 0, 0], [5, 1, 1], [5, 2, 2], [5, 3, 3], [5, 4, 4], [5, 5, 5]
     ]
+    scores = dict()
     
     # Paramètres de l'avion
     b     = 1.52  # Envergure (m)
@@ -127,13 +128,13 @@ def main():
             if temps is None or distance > limite_distance:
                 # La masse maximale est celle qui a fonctionné au tour d'avant
                 masse_max = masse - pas_masse
-                print(config, masse_max)
+                scores.update({str(config):score(masse_max,masse_vide,config)})
                 break
                 
             masse += pas_masse
             
-        # Calcul du score
-        
+    # Calcul du score
+    print(scores)
 
 if __name__ == "__main__":
     main()
