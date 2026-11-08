@@ -61,6 +61,17 @@ def drag_article(v, numero_article):
     if numero_article == 5:
         return drag_rubber_chicken(v)
 
+def score(mass, empty_mass, config):
+    article_mass = [0,0.75,0.63,1,0.5,1.5] #lbs
+    payload = (mass-empty_mass)*2.20462 #conversion en kg en lb
+    article_count = 0
+    
+    for article in config:
+        payload -= article_mass[article]
+        if article !=0: article_count += 1
+        
+    return 1.25 * article_count * payload
+
 def thrust_components(thrust, angle):
     x = thrust * cos(radians(angle)) 
     y = thrust * sin(radians(angle))
