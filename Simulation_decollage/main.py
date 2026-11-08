@@ -20,8 +20,8 @@ def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.5):
     t = 0.0
     
     # Paramètres d'hélice pour dynamic_thrust
-    pitch, diameter, RPM = 10, 12, 8000
-    Theoretical = 15.0 
+    pitch, diameter, RPM = 6, 12, 9104    #pouces, valeur avec le 3036-899kv
+    Theoretical = 2.7 #kg, valeur avec le 3026-890kv
 
     while True:
         v = math.sqrt(vx**2 + vy**2)
@@ -95,11 +95,11 @@ def main():
     ]
     
     # Paramètres de l'avion
-    b     = 0.0  # Envergure (m)
-    AR    = 0.0  # Allongement
-    corde = 0.0 # Corde (m)
-    alpha = 0.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
-    dt    = 0.0  # Intervalle de temps de la simulation
+    b     = 1.52  # Envergure (m)
+    AR    = 6.9  # Allongement
+    corde = 0.22 # Corde (m)
+    alpha = 10.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
+    dt    = 0.5  # Intervalle de temps de la simulation
     
     limite_distance = 13.8 # 45 pieds en mètres
     pas_masse = 0.1        # Incrément de poids
