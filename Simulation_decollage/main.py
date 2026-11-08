@@ -88,10 +88,18 @@ def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.05):
 # ==============================================================================
 def main():
     # Liste des configurations à tester (en utilisant les numéros d'articles de 1 à 5)
+    #1: flying pig
+    #2: dumpster fire
+    #3: banana
+    #4: waffles
+    #5: rubber chicken
     configurations = [
-        [1],       # Config 1: Juste le "flying_pig" (article 1)
-        [1, 3],    # Config 2: "flying_pig" (1) + "banana" (3)
-        [2, 4, 5]  # Config 3: dumpster_fire (2) + waffles (4) + rubber_chicken (5)
+        [0, 0, 0], [0, 1, 1], [0, 2, 2], [0, 3, 3], [0, 4, 4], [0, 5, 5], 
+         [1, 0, 0], [1, 1, 1], [1, 2, 2], [1, 3, 3], [1, 4, 4], [1, 5, 5], 
+         [2, 0, 0], [2, 1, 1], [2, 2, 2], [2, 3, 3], [2, 4, 4], [2, 5, 5], 
+         [3, 0, 0], [3, 1, 1], [3, 2, 2], [3, 3, 3], [3, 4, 4], [3, 5, 5], 
+         [4, 0, 0], [4, 1, 1], [4, 2, 2], [4, 3, 3], [4, 4, 4], [4, 5, 5], 
+         [5, 0, 0], [5, 1, 1], [5, 2, 2], [5, 3, 3], [5, 4, 4], [5, 5, 5]
     ]
     
     # Paramètres de l'avion
@@ -99,7 +107,7 @@ def main():
     AR    = 6.9  # Allongement
     corde = 0.22 # Corde (m)
     alpha = 10.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
-    dt    = 0.01  # Intervalle de temps de la simulation
+    dt    = 0.001  # Intervalle de temps de la simulation
     
     limite_distance = 13.8 # 45 pieds en mètres
     pas_masse = 0.1        # Incrément de poids
