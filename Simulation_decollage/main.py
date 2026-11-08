@@ -10,7 +10,7 @@ from functions import (
 # ==============================================================================
 # BOUCLE DE SIMULATION (sim_loop)
 # ==============================================================================
-def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.5):
+def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.05):
     g = 9.81
     poids = masse * g
     
@@ -99,7 +99,7 @@ def main():
     AR    = 6.9  # Allongement
     corde = 0.22 # Corde (m)
     alpha = 10.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
-    dt    = 0.5  # Intervalle de temps de la simulation
+    dt    = 0.01  # Intervalle de temps de la simulation
     
     limite_distance = 13.8 # 45 pieds en mètres
     pas_masse = 0.1        # Incrément de poids
