@@ -45,6 +45,39 @@ def drag_rubber_chicken(v):
     equation_5 = 0.0007*v**2 - 0.0045*v + 0.0175
     return equation_5
 
+def score(mass, empty_mass, config):
+    article_mass = [0,0.75,0.63,1,0.5,1.5] #lbs
+    payload = (mass-empty_mass)*2.20462 #conversion en kg en lb
+    article_count = 0
+    
+    for article in config:
+        payload -= article_mass[article]
+        if article !=0: article_count += 1
+        
+    return 1.25 * article_count * payload
+
+def config_description(config):
+    yap =''
+    for article in config:
+        if article == 1:
+            yap+='flying pig, '
+        if article == 2:
+            yap+='dumpter fire, '
+        if article == 3:
+            yap+='banana, '
+        if article == 4:
+            yap+='waffles'
+        if article == 5:
+            yap+='rubber chicken'
+        return yap
+
+def score_sorter(scores):
+    sorted_scores = dict()
+    for key in sorted(scores, key = scores.get):
+        sorted_scores[key] = scores[key]
+    
+    return sorted_scores
+
 #FONCTION drag_article
 #cette fonction permet d'obtenir le drag de chacun des articles de drag en les appelant par un numero
 def drag_article(v, numero_article): 
@@ -60,17 +93,6 @@ def drag_article(v, numero_article):
         return drag_waffles(v)
     if numero_article == 5:
         return drag_rubber_chicken(v)
-
-def score(mass, empty_mass, config):
-    article_mass = [0,0.75,0.63,1,0.5,1.5] #lbs
-    payload = (mass-empty_mass)*2.20462 #conversion en kg en lb
-    article_count = 0
-    
-    for article in config:
-        payload -= article_mass[article]
-        if article !=0: article_count += 1
-        
-    return 1.25 * article_count * payload
 
 def thrust_components(thrust, angle):
     x = thrust * cos(radians(angle)) 
