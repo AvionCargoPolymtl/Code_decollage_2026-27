@@ -3,14 +3,15 @@ import math
 from functions import (
     reynolds_calc, dynamic_thrust, thrust_components, 
     x_movement, y_movement, coefficient_force,
-    csv_lookup, xflr5_data, induced_drag, drag_article
+    csv_lookup, xflr5_data, induced_drag, drag_article, 
+    score, config_description, score_sorter
 )
 
 
 # ==============================================================================
 # BOUCLE DE SIMULATION (sim_loop)
 # ==============================================================================
-def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.05):
+def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.5):
     g = 9.81
     poids = masse * g
     
@@ -20,8 +21,8 @@ def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.05):
     t = 0.0
     
     # Paramètres d'hélice pour dynamic_thrust
-    pitch, diameter, RPM = 6, 12, 9104    #pouces, valeur avec le 3036-899kv
-    Theoretical = 2.7 #kg, valeur avec le 3026-890kv
+    pitch, diameter, RPM = 6, 12, 9104
+    Theoretical = 2.7 
 
     while True:
         v = math.sqrt(vx**2 + vy**2)
@@ -107,8 +108,9 @@ def main():
     b     = 1.52  # Envergure (m)
     AR    = 6.9  # Allongement
     corde = 0.22 # Corde (m)
-    alpha = 10.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
+    alpha = 12.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
     dt    = 0.001  # Intervalle de temps de la simulation
+    masse_vide = 2 #kg
     
     limite_distance = 13.8 # 45 pieds en mètres
     pas_masse = 0.1        # Incrément de poids
@@ -123,7 +125,7 @@ def main():
         while True:
             result = sim_loop(masse, config, b, AR, corde, alpha, dt)
             temps, distance = result
-            
+
             # Si l'avion ne décolle pas ou s'il dépasse les 45 pieds (13.8m)
             if temps is None or distance > limite_distance:
                 # La masse maximale est celle qui a fonctionné au tour d'avant
@@ -134,7 +136,8 @@ def main():
             masse += pas_masse
             
     # Calcul du score
-    print(scores)
+    print(score_sorter(scores))
+
 
 if __name__ == "__main__":
     main()
