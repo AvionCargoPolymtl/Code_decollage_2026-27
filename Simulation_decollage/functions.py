@@ -54,7 +54,7 @@ def score(mass, empty_mass, config):
         payload -= article_mass[article]
         if article !=0: article_count += 1
         
-    return 1.25 * article_count * payload
+    return round(1.25 * article_count * payload,3)
 
 def config_description(config):
     yap =''
