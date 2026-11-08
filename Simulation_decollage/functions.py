@@ -13,7 +13,7 @@ def dynamic_thrust(pitch, diameter, RPM, Vx, Theoretical):
     correction = Theoretical/(4.392399 * (10**-8) * RPM*(diameter**3.5)*parenthese/np.sqrt(pitch)/9.81)
 
     parenthese = 4.23333*(10**-4)*RPM*pitch-Vx
-    return (4.392399 * (10**-8) * RPM*(diameter**3.5)*parenthese/np.sqrt(pitch)/9.81*correction)
+    return (4.392399 * (10**-8) * RPM*(diameter**3.5)*parenthese/np.sqrt(pitch)*correction)
 
 #FONCTION drag_flying_pig
 #son numero d'article est le 1
