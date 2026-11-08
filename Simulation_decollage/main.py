@@ -119,6 +119,7 @@ def main():
             if temps is None or distance > limite_distance:
                 # La masse maximale est celle qui a fonctionné au tour d'avant
                 masse_max = masse - pas_masse
+                print(config, masse_max)
                 break
                 
             masse += pas_masse
