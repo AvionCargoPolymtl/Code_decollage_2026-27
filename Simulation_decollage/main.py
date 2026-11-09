@@ -108,7 +108,7 @@ def main():
     b     = 1.52  # Envergure (m)
     AR    = 6.9  # Allongement
     corde = 0.22 # Corde (m)
-    alpha = 12.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
+    alpha = 10.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
     dt    = 0.001  # Intervalle de temps de la simulation
     masse_vide = 2 #kg
     
@@ -121,6 +121,7 @@ def main():
     for i, config in enumerate(configurations):
         masse = 1.0 # Masse initiale au début du test
         masse_max = 0
+        print('calcul du score de la configuration',config)
         
         while True:
             result = sim_loop(masse, config, b, AR, corde, alpha, dt)
