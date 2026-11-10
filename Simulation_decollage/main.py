@@ -11,9 +11,10 @@ from functions import (
 # ==============================================================================
 # BOUCLE DE SIMULATION (sim_loop)
 # ==============================================================================
-def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.5):
+def sim_loop(masse, config_articles, b, AR, corde,tail_cord, tail_span, alpha, dt=0.5):
     g = 9.81
     poids = masse * g
+    tail_AR = tail_span/tail_cord
     
     # Position et vitesse initiales
     x, y = 0.0, 0.0
@@ -30,6 +31,7 @@ def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.5):
 
         # --- Aérodynamique ---
         Re = reynolds_calc(v, corde)
+        Re_tail = reynolds_calc(v,tail_cord)
         
         # Utilisation des fichiers CSV du dossier ./polar/
         # On cherche les données avec csv_lookup, puis on interpole avec xflr5_data
@@ -38,22 +40,30 @@ def sim_loop(masse, config_articles, b, AR, corde, alpha, dt=0.5):
             Cl, Cd_profil = xflr5_data(alpha, donnees_csv)
         except Exception as e:
             Cl, Cd_profil = 0.0, 0.0
-            
         Cd_ind = induced_drag(AR, Cl)
         
+        try:
+            tail_csv = csv_lookup(Re_tail,'NACA 0012 AIRFOILS')
+            Cl_tail, Cd_tail = xflr5_data(alpha, tail_csv)
+        except Exception as e:
+            Cl_tail, Cd_tail = 0.0, 0.0
+            
+        Cd_tail += induced_drag(tail_AR,Cl_tail)
+
         # --- Forces ---
         portance = coefficient_force(v, Cl, AR, b)
         
         trainee_profil = coefficient_force(v, Cd_profil, AR, b)
         trainee_induite = coefficient_force(v, Cd_ind, AR, b)
+        trainee_tail = coefficient_force(v,Cd_tail,tail_AR,tail_span)
         trainee_fuselage = coefficient_force(v, 0.05, AR, b) # Cd estimé du fuselage (0.05)
-        
+
         # Addition de la traînée pour tous les articles de la configuration actuelle
         trainee_articles_totale = 0
         for numero_article in config_articles:
             trainee_articles_totale += drag_article(v, numero_article)
             
-        trainee_totale = trainee_profil + trainee_induite + trainee_fuselage + trainee_articles_totale
+        trainee_totale = trainee_profil + trainee_induite + trainee_fuselage + trainee_articles_totale + trainee_tail
         
         # Poussée (Thrust)
         poussee = dynamic_thrust(pitch, diameter, RPM, v, Theoretical)
@@ -106,9 +116,11 @@ def main():
     
     # Paramètres de l'avion
     b     = 1.52  # Envergure (m)
-    AR    = 6.9  # Allongement
     corde = 0.22 # Corde (m)
-    alpha = 10.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
+    AR    = b/corde  # Allongement
+    tail_corde = 0.12
+    tail_span = 0.36
+    alpha = 12.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
     dt    = 0.001  # Intervalle de temps de la simulation
     masse_vide = 2 #kg
     
@@ -124,7 +136,7 @@ def main():
         print('calcul du score de la configuration',config)
         
         while True:
-            result = sim_loop(masse, config, b, AR, corde, alpha, dt)
+            result = sim_loop(masse, config, b, AR, corde,tail_corde,tail_span, alpha, dt)
             temps, distance = result
 
             # Si l'avion ne décolle pas ou s'il dépasse les 45 pieds (13.8m)
