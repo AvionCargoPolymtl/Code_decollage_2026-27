@@ -21,7 +21,7 @@ def drag_flying_pig(v):
     equation_1 = 0.0061*v**2 + 0.0101*v - 0.0375
     return equation_1
 
-#FONCTION drag_dumpster_dire
+#FONCTION drag_dumpster_fire
 #son numero d'article est le 2
 def drag_dumpster_fire(v):
     equation_2 = 0.0181*v**2 + 0.0101*v - 0.0375
@@ -44,6 +44,9 @@ def drag_waffles(v):
 def drag_rubber_chicken(v):
     equation_5 = 0.0007*v**2 - 0.0045*v + 0.0175
     return equation_5
+
+def fuze_drag(v):
+    return 0.0031*v**2+0.0037*v-0.007
 
 def score(mass, empty_mass, config):
     article_mass = [0,0.75,0.63,1,0.5,1.5] #lbs

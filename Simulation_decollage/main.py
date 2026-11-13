@@ -3,10 +3,11 @@ import math
 from functions import (
     reynolds_calc, dynamic_thrust, thrust_components, 
     x_movement, y_movement, coefficient_force,
-    csv_lookup, xflr5_data, induced_drag, drag_article, 
+    csv_lookup, xflr5_data, induced_drag, drag_article, fuze_drag,
     score, config_description, score_sorter
 )
 
+from Read_Csv_and_Interpolation import ReadCSV
 
 # ==============================================================================
 # BOUCLE DE SIMULATION (sim_loop)
@@ -36,15 +37,13 @@ def sim_loop(masse, config_articles, b, AR, corde,tail_cord, tail_span, alpha, d
         # Utilisation des fichiers CSV du dossier ./polar/
         # On cherche les données avec csv_lookup, puis on interpole avec xflr5_data
         try:
-            donnees_csv = csv_lookup(Re)
-            Cl, Cd_profil = xflr5_data(alpha, donnees_csv)
+            Cl, Cd_profil = ReadCSV(Re,alpha, 'E423')
         except Exception as e:
             Cl, Cd_profil = 0.0, 0.0
         Cd_ind = induced_drag(AR, Cl)
         
         try:
-            tail_csv = csv_lookup(Re_tail,'NACA 0012 AIRFOILS')
-            Cl_tail, Cd_tail = xflr5_data(alpha, tail_csv)
+            Cl_tail, Cd_tail = ReadCSV(Re_tail, alpha, 'NACA 0012 AIRFOILS')
         except Exception as e:
             Cl_tail, Cd_tail = 0.0, 0.0
             
@@ -56,7 +55,7 @@ def sim_loop(masse, config_articles, b, AR, corde,tail_cord, tail_span, alpha, d
         trainee_profil = coefficient_force(v, Cd_profil, AR, b)
         trainee_induite = coefficient_force(v, Cd_ind, AR, b)
         trainee_tail = coefficient_force(v,Cd_tail,tail_AR,tail_span)
-        trainee_fuselage = coefficient_force(v, 0.05, AR, b) # Cd estimé du fuselage (0.05)
+        trainee_fuselage = fuze_drag(v)
 
         # Addition de la traînée pour tous les articles de la configuration actuelle
         trainee_articles_totale = 0
@@ -122,7 +121,7 @@ def main():
     tail_span = 0.36
     alpha = 12.0  # Angle d'attaque de décollage (doit correspondre aux données CSV)
     dt    = 0.001  # Intervalle de temps de la simulation
-    masse_vide = 2 #kg
+    masse_vide = 1.5 #kg
     
     limite_distance = 13.8 # 45 pieds en mètres
     pas_masse = 0.1        # Incrément de poids
